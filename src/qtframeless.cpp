@@ -78,7 +78,7 @@ QtFrameless::~QtFrameless() {
 void QtFrameless::app(QApplication &a) {}
 
 void QtFrameless::_new_widget() {
-    //    _window->setWindowFlag(Qt::X11BypassWindowManagerHint,true);
+    // _window->setWindowFlag(Qt::X11BypassWindowManagerHint, true);
     _window->setWindowFlag(Qt::FramelessWindowHint);
     _window->setAttribute(Qt::WA_TranslucentBackground);
     _window->setAttribute(Qt::WA_StyledBackground);
@@ -782,6 +782,14 @@ bool QtFrameless::eventFilter(QObject *watched, QEvent *event) {
                     rubberBand_delegated = false;
                     rubberBand_lastRect_recordingtime = 0;
 
+#ifdef Q_OS_LINUX
+                    rubberBand_moved = false;
+                    rubberBand_resized = false;
+                    rubberBand->setVisible(false);
+                    rubberBand_lastRect_recordingtime = 0;
+                    return QObject::eventFilter(watched, event);
+#endif
+
                     rectAfterMaximized = rubberBand_origin_size;
 
                     QSize s = _window->size();
@@ -989,7 +997,7 @@ bool QtFrameless::eventFilter(QObject *watched, QEvent *event) {
             //            ____ << e<< "WindowActivate";
         } else if (event->type() == QEvent::WindowStateChange) {
             QWindowStateChangeEvent *stateChangeEvent = static_cast<QWindowStateChangeEvent *>(event);
-            //            ____<<"WindowStateChange"<<stateChangeEvent<<_window->isMaximized();
+            // qDebug() << "WindowStateChange" << stateChangeEvent << _window->isMaximized();
             if (_window->isMaximized()) {
                 const auto &geometry = _window->geometry();
                 if (geometry.x() != 0 && geometry.y() != 0) {
@@ -1012,9 +1020,13 @@ bool QtFrameless::eventFilter(QObject *watched, QEvent *event) {
                 new_rubberBand();
             }
 
+            // QGL_DEBUG(QGL_FAS(m_isPress), QGL_FAS(m_isPressButton), QGL_FAS(m_isSystemResize), QGL_FAS(rubberBand_delegated), QGL_FAS(rubberBand_resized));
+
+#ifdef Q_OS_WIN
             if (!m_isPress && !m_isPressButton && !m_isSystemResize) {
                 return QObject::eventFilter(watched, event);
             }
+#endif
 
             if (rubberBand_delegated) {
                 return QObject::eventFilter(watched, event);
@@ -1026,6 +1038,35 @@ bool QtFrameless::eventFilter(QObject *watched, QEvent *event) {
             }
 
             rubberBand_resized = true;
+
+#ifdef Q_OS_LINUX
+            {
+                if (!rubberBand_delegated) {
+                    QRect screenRect = this->_window->screen()->availableGeometry();
+                    QRect rect = this->_window->frameGeometry();
+                    // QGL_DEBUG(rubberBand_resized, rubberBand_begin_size, rubberBand_origin_location);
+                    // QGL_DEBUG(e->oldSize(), e->size(), screenRect, screenRect.center(), rect, rect.right(), screenRect.right());
+                    if (!this->_window->isMaximized() && QCursor::pos().x() < screenRect.center().x() && qAbs(rect.width() - screenRect.center().x()) < screenRect.center().x() / 2
+                        && rect.height() == screenRect.height()) {
+                        rubberBand_delegated = true; // rect.x() == screenRect.x() && rect.y() == screenRect.y() &&
+                        rubberBand_direction = Qt::Edge::LeftEdge;
+                        background_main_layout->setContentsMargins(0, 0, shadow_margin, 0);
+                    } else if (!this->_window->isMaximized() && QCursor::pos().x() > screenRect.center().x()
+                               && qAbs(screenRect.center().x() + rect.width() - screenRect.right()) < screenRect.center().x() / 2 && rect.height() == screenRect.height()) {
+                        rubberBand_delegated = true; // qAbs(rect.x() - screenRect.center().x()) < 300 && rect.y() == screenRect.y() &&
+                        rubberBand_direction = Qt::Edge::RightEdge;
+                        background_main_layout->setContentsMargins(shadow_margin, 0, 0, 0);
+                    } else {
+                        // if (!this->_window->isMaximized() && !rubberBand_delegated) {
+                        //     rubberBand_delegated = false;
+                        //     rubberBand_direction = Qt::Edges();
+                        //     background_main_layout->setContentsMargins(shadow_margin, shadow_margin, shadow_margin, shadow_margin);
+                        // }
+                    }
+                }
+                return QObject::eventFilter(watched, event);
+            }
+#endif
 
             if (!rubberBand_enable[1]) {
                 return QObject::eventFilter(watched, event);
@@ -1064,9 +1105,11 @@ bool QtFrameless::eventFilter(QObject *watched, QEvent *event) {
                 new_rubberBand();
             }
 
+#ifdef Q_OS_WIN
             if (!m_isPress && !m_isPressButton && !m_isSystemResize) {
                 return QObject::eventFilter(watched, event);
             }
+#endif
 
             if (rubberBand_delegated) {
                 return QObject::eventFilter(watched, event);
@@ -1082,6 +1125,10 @@ bool QtFrameless::eventFilter(QObject *watched, QEvent *event) {
             }
 
             rubberBand_moved = true;
+
+#ifdef Q_OS_LINUX
+            return QObject::eventFilter(watched, event);
+#endif
 
             QRect screenRect = this->_window->screen()->availableGeometry();
             QRect rect = this->_window->frameGeometry();
