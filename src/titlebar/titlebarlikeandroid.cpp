@@ -19,11 +19,11 @@ NAMESPACE_QTFRAMELESS_BEGIN
 namespace TB {
 
 
-TitlebarLikeAndroid::TitlebarLikeAndroid(QtFrameless *fl, QWidget *parent)
+TitlebarLikeAndroid::TitlebarLikeAndroid(QtFrameless *qfl, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TitlebarLikeAndroid) {
     ui->setupUi(this);
-    this->fl = fl;
+    this->qfl = qfl;
     this->_window = parent;
 
     connect(&GLOBAL.SIGNAL, &__signal__::themeChanged, this, [=]() { this->loadthemesetting(); });
@@ -36,7 +36,7 @@ TitlebarLikeAndroid::~TitlebarLikeAndroid() {
 
 
 void TitlebarLikeAndroid::load() {
-    //    this->setFixedHeight(fl.titlebar_MinimumHeight);
+    //    this->setFixedHeight(qfl.titlebar_MinimumHeight);
     load_round4();
 }
 
@@ -63,7 +63,7 @@ border-top-left-radius:0px; border-top-right-radius:0px;
                                       .arg(QString::number(border_top_width),
                                            QString::number(border_bottom_width),
                                            GLOBAL.qcolor2qss(colors.at(1)),
-                                           GLOBAL.qcolor2qss(colors.at(2)))); // .arg(QString::number(fl->round4.at(0)),QString::number(fl->round4.at(1)))
+                                           GLOBAL.qcolor2qss(colors.at(2)))); // .arg(QString::number(qfl->round4.at(0)),QString::number(qfl->round4.at(1)))
         // ui->widget_4->setContentsMargins(0,border_top_width,0,border_bottom_width);
     } else {
         ui->widget->setStyleSheet(QString(R"(

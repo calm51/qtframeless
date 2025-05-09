@@ -174,6 +174,7 @@ class QTFRAMELESS_EXPORT __global__ {
     QString currentTheme = "Light";
     void swithTheme(const QString &key);
     inline const __themeconf__ &currentThemeConf() { return theme_config[currentTheme]; }
+    inline bool is_light() { return this->currentTheme == QFL::Theme::Light || this->currentTheme == QFL::Theme::White; }
 
     void signal_connect_slots();
 

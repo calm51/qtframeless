@@ -20,10 +20,10 @@ class QTFRAMELESS_EXPORT TitlebarLikeAndroid : public QWidget {
     Q_OBJECT
 
   public:
-    explicit TitlebarLikeAndroid(QtFrameless *fl, QWidget *parent = nullptr);
+    explicit TitlebarLikeAndroid(QtFrameless *qfl, QWidget *parent = nullptr);
     ~TitlebarLikeAndroid();
 
-    QtFrameless *fl = nullptr;
+    QtFrameless *qfl = nullptr;
 
     void load();
     void loadthemesetting();

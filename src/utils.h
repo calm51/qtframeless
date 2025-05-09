@@ -11,30 +11,30 @@ NAMESPACE_QTFRAMELESS_BEGIN
 
 template<typename T3, typename T4>
 QPair<QtFrameless *, T3 *> template_windows10(T4 &w, const qint32 &titlebar_MinimumHeight, const qint32 &button_MinimumWidth = 40, const qint32 &titlebar_FixedHeight = -1) {
-    QtFrameless *fl = new QtFrameless(&w);
-    fl->titlebar_MinimumHeight = titlebar_MinimumHeight; // 24-40 28-44 28-46
-    fl->init(w);
-    fl->loadthemesetting();
-    w.fl = fl;
+    QtFrameless *qfl = new QtFrameless(&w);
+    qfl->titlebar_MinimumHeight = titlebar_MinimumHeight; // 24-40 28-44 28-46
+    qfl->init(w);
+    qfl->loadthemesetting();
+    w.qfl = qfl;
 #ifndef Q_OS_ANDROID
-    TB::TitlebarLikeWindows10 *titlebar = new TB::TitlebarLikeWindows10(fl, button_MinimumWidth, &w);
+    TB::TitlebarLikeWindows10 *titlebar = new TB::TitlebarLikeWindows10(qfl, button_MinimumWidth, &w);
     titlebar->loadthemesetting();
     titlebar->setWindowIcon(w.windowIcon());
-    fl->set_titlebar(*titlebar);
+    qfl->set_titlebar(*titlebar);
 #else
-    TB::TitlebarLikeAndroid *titlebar = new TB::TitlebarLikeAndroid(fl, &w);
+    TB::TitlebarLikeAndroid *titlebar = new TB::TitlebarLikeAndroid(qfl, &w);
     titlebar->loadthemesetting();
-    titlebar->setFixedHeight(fl->titlebar_MinimumHeight);
-    fl->set_titlebar(*titlebar);
+    titlebar->setFixedHeight(qfl->titlebar_MinimumHeight);
+    qfl->set_titlebar(*titlebar);
 #endif
     if (titlebar_FixedHeight > -1) {
         titlebar->setFixedHeight(titlebar_FixedHeight);
     }
 #ifndef Q_OS_ANDROID
-    fl->resizeto();
+    qfl->resizeto();
 #endif
     QPair<QtFrameless *, T3 *> pair;
-    pair.first = fl;
+    pair.first = qfl;
     pair.second = titlebar;
     return pair;
 }
@@ -48,26 +48,26 @@ enum Flag { Red = 1, Purple = 2, Green = 3, Blue = 4 };
 #endif // _FRAMELESS_TEMPLATE_TOPLINE_COLOR
 
 template<typename T3>
-void template_topline_color(QPair<QtFrameless *, T3 *> &fl_tb, const TopLineColor::Flag &tlc) {
+void template_topline_color(QPair<QtFrameless *, T3 *> &qfl_tb, const TopLineColor::Flag &tlc) {
     __global__ &fg = G();
     if (tlc == TopLineColor::Purple) {
         if (fg.currentTheme == Theme::White) {
 #ifdef Q_OS_ANDROID
-            fl_tb.second->colors[1] = QColor(219, 170, 240);
+            qfl_tb.second->colors[1] = QColor(219, 170, 240);
 #else
-            fl_tb.second->colors[9] = QColor(219, 170, 240);
+            qfl_tb.second->colors[9] = QColor(219, 170, 240);
 #endif
         } else if (fg.currentTheme == Theme::Gray) {
 #ifdef Q_OS_ANDROID
-            fl_tb.second->colors[1] = QColor(82, 54, 95);
+            qfl_tb.second->colors[1] = QColor(82, 54, 95);
 #else
-            fl_tb.second->colors[9] = QColor(82, 54, 95);
+            qfl_tb.second->colors[9] = QColor(82, 54, 95);
 #endif
         }
     } else if (tlc == TopLineColor::Red) {
     }
 
-    fl_tb.second->load();
+    qfl_tb.second->load();
 }
 
 

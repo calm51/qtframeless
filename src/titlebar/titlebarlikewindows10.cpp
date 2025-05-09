@@ -36,11 +36,11 @@ namespace TB {
 //    SetWindowPlacement(hWnd, &wp);
 //}
 
-TitlebarLikeWindows10::TitlebarLikeWindows10(QtFrameless *fl, const int &buttonFixeWidth, QWidget *parent)
+TitlebarLikeWindows10::TitlebarLikeWindows10(QtFrameless *qfl, const int &buttonFixeWidth, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::TitlebarLikeWindows10) {
     ui->setupUi(this);
-    this->fl = fl;
+    this->qfl = qfl;
     this->_window = parent;
     ui->toolButton_4->type = RIGHTTOP_TYPE::__type__::Minimize;
     ui->toolButton_5->type = RIGHTTOP_TYPE::__type__::Maximize;
@@ -53,9 +53,9 @@ TitlebarLikeWindows10::TitlebarLikeWindows10(QtFrameless *fl, const int &buttonF
     ui->toolButton_4->setFixedWidth(buttonFixeWidth);
     ui->toolButton_5->setFixedWidth(buttonFixeWidth);
     ui->toolButton_6->setFixedWidth(buttonFixeWidth);
-    //    ui->toolButton_4->setFixedHeight(fl->titlebar_MinimumHeight);
-    //    ui->toolButton_5->setFixedHeight(fl->titlebar_MinimumHeight);
-    //    ui->toolButton_6->setFixedHeight(fl->titlebar_MinimumHeight);
+    //    ui->toolButton_4->setFixedHeight(qfl->titlebar_MinimumHeight);
+    //    ui->toolButton_5->setFixedHeight(qfl->titlebar_MinimumHeight);
+    //    ui->toolButton_6->setFixedHeight(qfl->titlebar_MinimumHeight);
 
 
     QString s3(R"(
@@ -85,16 +85,16 @@ QToolButton{
     draw(ui->toolButton_6);
 
     connect(ui->toolButton_4, &QToolButton::clicked, this, [=]() {
-        if (fl->allow_showMinimized) {
+        if (qfl->allow_showMinimized) {
             this->_window->showMinimized();
         }
         // minimizeWindow(reinterpret_cast<HWND>(this->_window->winId()));
     });
     connect(ui->toolButton_5, &QToolButton::clicked, this, [=]() {
         if (this->_window->isMaximized()) {
-            this->fl->showNormal();
+            this->qfl->showNormal();
         } else {
-            this->fl->showMaximized();
+            this->qfl->showMaximized();
         }
     });
     connect(ui->toolButton_6, &QToolButton::clicked, this, [=]() { this->_window->close(); });
@@ -106,7 +106,7 @@ QToolButton{
         ui->label->setPixmap(icon.pixmap(QSize(64, 64)));
     });
 
-    connect(fl, &QtFrameless::windowStateChanged, this, [=](const Qt::WindowStates &state) { this->load_round4(!state.testFlag(Qt::WindowMaximized)); });
+    connect(qfl, &QtFrameless::windowStateChanged, this, [=](const Qt::WindowStates &state) { this->load_round4(!state.testFlag(Qt::WindowMaximized)); });
 }
 
 TitlebarLikeWindows10::~TitlebarLikeWindows10() {
@@ -133,8 +133,8 @@ void TitlebarLikeWindows10::draw(ToolButton_righttop_windows10 *button) {
     const double &width = static_cast<double>(button->width());
     const double &height = static_cast<double>(button->height());
 
-    bool is_not_activate = pos.x() < 0 || pos.y() - fl->resize_rect_in < 0 || pos.x() > width || pos.y() > height;
-    bool is_not_activate__close = pos.x() < 0 || pos.y() - fl->resize_rect_in < 0 || pos.x() + fl->resize_rect_in > width || pos.y() > height;
+    bool is_not_activate = pos.x() < 0 || pos.y() - qfl->resize_rect_in < 0 || pos.x() > width || pos.y() > height;
+    bool is_not_activate__close = pos.x() < 0 || pos.y() - qfl->resize_rect_in < 0 || pos.x() + qfl->resize_rect_in > width || pos.y() > height;
 
     button->p.fill(Qt::transparent);
     QPainter painter(&button->p);
@@ -193,10 +193,10 @@ void TitlebarLikeWindows10::draw(ToolButton_righttop_windows10 *button) {
         painter.setRenderHint(QPainter::Antialiasing);
         QPainterPath path(border_rect.topLeft());
         path.setFillRule(Qt::WindingFill);
-        //        path.addRoundedRect(border_rect, fl->round4.at(1),fl->round4.at(1));
+        //        path.addRoundedRect(border_rect, qfl->round4.at(1),qfl->round4.at(1));
         //        path.addRect(QRect(border_rect.left(), border_rect.top()+border_rect.height()/2, border_rect.width(), border_rect.height()/2));
         //        path.addRect(QRect(border_rect.left(), border_rect.top(), border_rect.width()/2, border_rect.height()/2));
-        int radius = fl->round4.at(1);
+        int radius = qfl->round4.at(1);
 
         QRectF arc_rect(border_rect.width() - (radius * 2), border_rect.top(), radius * 2, radius * 2);
         path.moveTo(border_rect.topLeft());
@@ -289,9 +289,9 @@ void TitlebarLikeWindows10::load() {
     //border-bottom-color:%4;
     //}
     //)").arg(QString::number(border_top_width),QString::number(border_bottom_width),GLOBAL.qcolor2qss(colors.at(9)),GLOBAL.qcolor2qss(colors.at(10))));
-    //    this->setFixedHeight(fl.titlebar_MinimumHeight);
+    //    this->setFixedHeight(qfl.titlebar_MinimumHeight);
 
-    load_round4(!this->fl->_window->isMaximized());
+    load_round4(!this->qfl->_window->isMaximized());
 
     ui->toolButton_4->setVisible(!hide_button.at(0));
     ui->toolButton_5->setVisible(!hide_button.at(1));
@@ -339,12 +339,12 @@ border-top-left-radius:%5px; border-top-right-radius:%6px;
 }
         )")
                                       .arg(QString::number(border_top_width), QString::number(border_bottom_width), GLOBAL.qcolor2qss(colors.at(9)), GLOBAL.qcolor2qss(colors.at(10)))
-                                      .arg(QString::number(fl->round4.at(0)), QString::number(fl->round4.at(1))));
+                                      .arg(QString::number(qfl->round4.at(0)), QString::number(qfl->round4.at(1))));
         // ui->widget_4->setContentsMargins(0,border_top_width,0,border_bottom_width);
         QGridLayout *l1 = qobject_cast<QGridLayout *>(ui->widget_2->layout());
-        if (fl->round4.at(0) / 2 > 6) {
+        if (qfl->round4.at(0) / 2 > 6) {
             auto l1_cm = l1->contentsMargins();
-            l1_cm.setLeft(fl->round4.at(0) / 2);
+            l1_cm.setLeft(qfl->round4.at(0) / 2);
             l1->setContentsMargins(l1_cm);
         } else {
             auto l1_cm = l1->contentsMargins();

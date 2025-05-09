@@ -27,13 +27,13 @@ class QTFRAMELESS_EXPORT TitlebarLikeWindows10 : public QWidget {
     Q_OBJECT
 
   public:
-    explicit TitlebarLikeWindows10(QtFrameless *fl, const int &buttonFixeWidth = 40, QWidget *parent = nullptr);
+    explicit TitlebarLikeWindows10(QtFrameless *qfl, const int &buttonFixeWidth = 40, QWidget *parent = nullptr);
     ~TitlebarLikeWindows10();
 
     void resizeEvent(QResizeEvent *event);
     bool eventFilter(QObject *watched, QEvent *event);
 
-    QtFrameless *fl = nullptr;
+    QtFrameless *qfl = nullptr;
     void load();
     void loadthemesetting();
 
