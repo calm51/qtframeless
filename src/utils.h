@@ -1,4 +1,6 @@
-﻿#ifndef UTILS_H
+﻿#pragma execution_character_set("utf-8")
+
+#ifndef UTILS_H
 #define UTILS_H
 
 #include "./qtframeless.h"
@@ -50,22 +52,25 @@ enum Flag { Red = 1, Purple = 2, Green = 3, Blue = 4 };
 template<typename T3>
 void template_topline_color(QPair<QtFrameless *, T3 *> &qfl_tb, const TopLineColor::Flag &tlc) {
     __global__ &fg = G();
+    QColor color;
     if (tlc == TopLineColor::Purple) {
-        if (fg.currentTheme == Theme::White) {
-#ifdef Q_OS_ANDROID
-            qfl_tb.second->colors[1] = QColor(219, 170, 240);
-#else
-            qfl_tb.second->colors[9] = QColor(219, 170, 240);
-#endif
+        if (fg.is_light()) {
+            color = QColor(219, 170, 240);
         } else if (fg.currentTheme == Theme::Gray) {
-#ifdef Q_OS_ANDROID
-            qfl_tb.second->colors[1] = QColor(82, 54, 95);
-#else
-            qfl_tb.second->colors[9] = QColor(82, 54, 95);
-#endif
+            color = QColor(82, 54, 95);
         }
     } else if (tlc == TopLineColor::Red) {
+        if (fg.currentTheme == Theme::Light) {
+            color = QColor(240, 170, 170);
+        } else if (fg.currentTheme == Theme::Gray) {
+            color = QColor(72, 49, 49);
+        }
     }
+#ifdef Q_OS_ANDROID
+    qfl_tb.second->colors[1] = color;
+#else
+    qfl_tb.second->colors[9] = color;
+#endif
 
     qfl_tb.second->load();
 }
@@ -74,6 +79,9 @@ void template_topline_color(QPair<QtFrameless *, T3 *> &qfl_tb, const TopLineCol
 template<typename T1, typename T2>
 void template_dialog_tocenter(T1 *dialog, T2 *parent) {
     if (parent) {
+        if (parent->window()) {
+            parent = parent->window();
+        }
         const QRect &parentGeometry = parent->geometry();
         const QRect &childGeometry = dialog->geometry();
         const int &x = parentGeometry.x() + (parentGeometry.width() - childGeometry.width()) / 2;

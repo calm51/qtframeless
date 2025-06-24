@@ -1,4 +1,6 @@
-﻿#ifndef WIDGET_RUBBERBAND_POP_H
+﻿#pragma execution_character_set("utf-8")
+
+#ifndef WIDGET_RUBBERBAND_POP_H
 #define WIDGET_RUBBERBAND_POP_H
 
 #include <QWidget>

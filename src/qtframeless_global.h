@@ -1,4 +1,4 @@
-#pragma execution_character_set("utf-8")
+﻿#pragma execution_character_set("utf-8")
 #ifndef QTFRAMELESS_GLOBAL_H
 #define QTFRAMELESS_GLOBAL_H
 

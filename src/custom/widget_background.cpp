@@ -1,4 +1,6 @@
-﻿#include "widget_background.h"
+﻿#pragma execution_character_set("utf-8")
+
+#include "widget_background.h"
 
 #include <qtgllogger/qtgllogger.h>
 

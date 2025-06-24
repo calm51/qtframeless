@@ -1,4 +1,6 @@
-﻿#ifndef TITLEBARLIKEWINDOWS10_H
+﻿#pragma execution_character_set("utf-8")
+
+#ifndef TITLEBARLIKEWINDOWS10_H
 #define TITLEBARLIKEWINDOWS10_H
 
 #include <qtoolbutton.h>
@@ -11,13 +13,12 @@
 
 #include <QGridLayout>
 
+
 namespace Ui {
 class TitlebarLikeWindows10;
 }
 
-
 NAMESPACE_QTFRAMELESS_BEGIN
-
 
 class QtFrameless;
 

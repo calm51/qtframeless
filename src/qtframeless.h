@@ -1,4 +1,6 @@
-﻿#ifndef FRAMELESS_H
+﻿#pragma execution_character_set("utf-8")
+
+#ifndef FRAMELESS_H
 #define FRAMELESS_H
 
 #include "./qtframeless_global.h"
@@ -93,6 +95,12 @@ class QTFRAMELESS_EXPORT QtFrameless : public QObject, public QAbstractNativeEve
     //    QSize getsize_central_widget();
     QWidget *central_widget = nullptr;
 
+    int _origin_titlebar_height; // 在show之前的titlebar高度
+    int get_origin_frame_width();
+    int get_origin_frame_height();
+
+    inline QWidget *get_central_main_widget() { return central_main_widget; }
+    inline QWidget *get_content_main_widget() { return content_main_widget; }
 
   signals:
     void windowStateChanged(const Qt::WindowStates &state);
@@ -124,6 +132,7 @@ class QTFRAMELESS_EXPORT QtFrameless : public QObject, public QAbstractNativeEve
     QLayout *central_layout = nullptr;
     QGridLayout *background_main_layout = nullptr;
     QGridLayout *central_main_layout = nullptr;
+    QGridLayout *content_main_layout = nullptr;
     QGridLayout *titlebar_main_layout = nullptr;
     QGridLayout *menubar_main_layout = nullptr;
     QGridLayout *bottombar_main_layout = nullptr;
@@ -131,6 +140,7 @@ class QTFRAMELESS_EXPORT QtFrameless : public QObject, public QAbstractNativeEve
 
     QWidget *background_main_widget = nullptr;
     QWidget *central_main_widget = nullptr;
+    QWidget *content_main_widget = nullptr;
     QWidget *titlebar_main_widget = nullptr;
     QWidget *menubar_main_widget = nullptr;
     QWidget *bottombar_main_widget = nullptr;

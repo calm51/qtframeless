@@ -1,4 +1,6 @@
-﻿#include "widget_rubberband_pop.h"
+﻿#pragma execution_character_set("utf-8")
+
+#include "widget_rubberband_pop.h"
 
 #include <QPaintEvent>
 #include <QPainter>

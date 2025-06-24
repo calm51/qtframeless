@@ -1,9 +1,9 @@
-﻿#include "qtframeless.h"
-#pragma execution_character_set("utf-8")
+﻿#pragma execution_character_set("utf-8")
+
 #include <qapplication.h>
 #include "./custom/widget_background.h"
 #include <QThread>
-
+#include "qtframeless.h"
 #include <qtoolbutton.h>
 
 #include <QScreen>
@@ -92,6 +92,9 @@ void QtFrameless::_new_widget() {
     central_main_widget = new QWidget(_window);
     central_main_widget->setObjectName(QString("central_main_widget"));
 
+    content_main_widget = new QWidget(_window);
+    content_main_widget->setObjectName(QString("content_main_widget"));
+
 
     titlebar_main_widget = new QWidget(_window);
     titlebar_main_widget->setObjectName(QString("titlebar_main_widget"));
@@ -111,6 +114,10 @@ void QtFrameless::_new_widget() {
     central_main_layout = new QGridLayout(central_main_widget);
     central_main_layout->setSpacing(0);
 
+    content_main_layout = new QGridLayout(content_main_widget);
+    content_main_layout->setContentsMargins(0, 0, 0, 0);
+    content_main_layout->setSpacing(0);
+
     titlebar_main_layout = new QGridLayout(titlebar_main_widget);
     titlebar_main_layout->setContentsMargins(0, 0, 0, 0);
     titlebar_main_layout->setSpacing(0);
@@ -125,10 +132,13 @@ void QtFrameless::_new_widget() {
 
     background_main_layout->addWidget(central_main_widget, 0, 0, 1, 1);
 
+
     central_main_layout->addWidget(titlebar_main_widget, 0, 0, 1, 1);
-    central_main_layout->addWidget(menubar_main_widget, 1, 0, 1, 1);
-    central_main_layout->addWidget(central_widget, 2, 0, 1, 1);
-    central_main_layout->addWidget(bottombar_main_widget, 3, 0, 1, 1);
+    central_main_layout->addWidget(content_main_widget, 1, 0, 1, 1);
+
+    content_main_layout->addWidget(menubar_main_widget, 0, 0, 1, 1);
+    content_main_layout->addWidget(central_widget, 1, 0, 1, 1);
+    content_main_layout->addWidget(bottombar_main_widget, 2, 0, 1, 1);
 
 #ifndef Q_OS_ANDROID
     // shadow = new QGraphicsDropShadowEffect(central_main_widget);
@@ -303,6 +313,7 @@ void QtFrameless::loadthemesetting() {
 
 void QtFrameless::set_titlebar(QWidget &titlebar) {
     titlebar_widget = &titlebar;
+    _origin_titlebar_height = titlebar.height();
     titlebar_main_layout->addWidget(&titlebar, 0, 0, 1, 1);
 #ifndef Q_OS_ANDROID
     foreach (QWidget *wi, titlebar.findChildren<QToolButton *>()) {
@@ -640,6 +651,14 @@ void QtFrameless::resizeto() {
     _window->resize(_window_size.width() + (shadow_margin * 2),
                     _window_size.height() + (shadow_margin * 2) + titlebar_widget->height()); //
 #endif
+}
+
+int QtFrameless::get_origin_frame_width() {
+    return (this->shadow_margin * 2);
+}
+
+int QtFrameless::get_origin_frame_height() {
+    return this->_origin_titlebar_height + (this->shadow_margin * 2);
 }
 
 

@@ -1,3 +1,5 @@
+﻿#pragma execution_character_set("utf-8")
+
 #ifndef LOGGEROBJ_H
 #define LOGGEROBJ_H
 

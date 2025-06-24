@@ -1,4 +1,6 @@
-﻿#include "titlebarlikewindows10.h"
+﻿#pragma execution_character_set("utf-8")
+
+#include "titlebarlikewindows10.h"
 
 #include "../custom/toolbutton_righttop_windows10.h"
 #include "ui_titlebarlikewindows10.h"

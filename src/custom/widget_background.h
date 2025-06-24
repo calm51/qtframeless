@@ -1,4 +1,6 @@
-﻿#ifndef WIDGET_BACKGROUND_H
+﻿#pragma execution_character_set("utf-8")
+
+#ifndef WIDGET_BACKGROUND_H
 #define WIDGET_BACKGROUND_H
 
 #include <QObject>

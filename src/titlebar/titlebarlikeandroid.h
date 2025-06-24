@@ -1,14 +1,16 @@
-﻿#ifndef TITLEBARLIKEANDROID_H
+﻿#pragma execution_character_set("utf-8")
+
+#ifndef TITLEBARLIKEANDROID_H
 #define TITLEBARLIKEANDROID_H
 
 #include <QWidget>
 
 #include "../qtframeless_global.h"
 
+
 namespace Ui {
 class TitlebarLikeAndroid;
 }
-
 
 NAMESPACE_QTFRAMELESS_BEGIN
 
@@ -39,7 +41,7 @@ class QTFRAMELESS_EXPORT TitlebarLikeAndroid : public QWidget {
 
     };
 
-    Ui::TitlebarLikeAndroid *ui;
+   Ui::TitlebarLikeAndroid *ui;
 
   private:
     QWidget *_window = nullptr;

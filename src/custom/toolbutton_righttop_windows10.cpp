@@ -1,4 +1,6 @@
-﻿#include "toolbutton_righttop_windows10.h"
+﻿#pragma execution_character_set("utf-8")
+
+#include "toolbutton_righttop_windows10.h"
 
 #include <QPainter>
 #include <QPen>

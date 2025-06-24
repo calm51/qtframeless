@@ -1,4 +1,6 @@
-﻿#ifndef TOOLBUTTON_RIGHTTOP_WINDOWS10_H
+﻿#pragma execution_character_set("utf-8")
+
+#ifndef TOOLBUTTON_RIGHTTOP_WINDOWS10_H
 #define TOOLBUTTON_RIGHTTOP_WINDOWS10_H
 
 #include <QObject>
